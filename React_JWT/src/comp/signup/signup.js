@@ -13,7 +13,7 @@ function Signup() {
 
     try {
      
-      const response = await fetch('https://login-page-jwt.onrender.com', {
+      const response = await fetch('https://login-page-jwt.onrender.com/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

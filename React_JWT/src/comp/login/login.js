@@ -13,7 +13,7 @@ function Login() {
 
     try {
       // 👇 CONNECTS TO BACKEND LOGIN
-      const response = await fetch('https://login-page-jwt.onrender.com', {
+      const response = await fetch('https://login-page-jwt.onrender.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
