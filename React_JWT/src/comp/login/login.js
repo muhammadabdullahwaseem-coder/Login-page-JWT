@@ -24,7 +24,6 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Save the token so the user stays logged in
         localStorage.setItem('token', data.token); 
         navigate('/dashboard');
       } else {
@@ -43,11 +42,11 @@ function Login() {
       
       <Form.Control 
         type="email" placeholder="Email" name='email' 
-        value={formData.email} onChange={handleChange} className="mb-3" 
+        value={formData.email} onChange={handleChange} className="mb-3" style={{color: 'black'}}
       />
       <Form.Control 
         type="password" placeholder="Password" name='password' 
-        value={formData.password} onChange={handleChange} className="mb-3" 
+        value={formData.password} onChange={handleChange} className="mb-3" style={{color: 'black'}}
       />
       
       <Link 

@@ -12,7 +12,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      // 👇 THIS IS THE NEW PART THAT CONNECTS TO BACKEND
+     
       const response = await fetch('https://login-page-jwt.onrender.com', {
         method: 'POST',
         headers: {
@@ -42,15 +42,15 @@ function Signup() {
       
       <Form.Control 
         type="text" placeholder="Name" name='name' 
-        value={formData.name} onChange={handleChange} className="mb-3" 
+        value={formData.name} onChange={handleChange} className="mb-3" style={{color: 'black'}}
       />
       <Form.Control 
         type="email" placeholder="Email" name='email' 
-        value={formData.email} onChange={handleChange} className="mb-3" 
+        value={formData.email} onChange={handleChange} className="mb-3" style={{color: 'black'}}
       />
       <Form.Control 
         type="password" placeholder="Password" name='password' 
-        value={formData.password} onChange={handleChange} className="mb-3" 
+        value={formData.password} onChange={handleChange} className="mb-3" style={{color: 'black'}}
       />
       
       <Button type="submit" variant="primary">Sign Up</Button>
