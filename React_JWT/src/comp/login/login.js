@@ -12,7 +12,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      // 👇 CONNECTS TO BACKEND LOGIN
+   
       const response = await fetch('https://login-page-jwt.onrender.com/auth/login', {
         method: 'POST',
         headers: {

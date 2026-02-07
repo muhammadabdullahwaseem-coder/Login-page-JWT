@@ -1,0 +1,38 @@
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0f0c29; /* Matches your dark theme */
+  color: white;
+}
+
+.success-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.success-title {
+  color: #00d2ff;
+  margin-bottom: 20px;
+}
+
+.login-btn {
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  border: none;
+  padding: 10px 30px;
+  color: white;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.2s;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}

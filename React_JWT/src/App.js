@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route, useLocation, Link, Navigate } from "react-router-dom";
 import Header from "./comp/header/header";
 import "./App.css";
-
+import Success from './comp/success/success';
 import Signup from "./comp/signup/signup";
 import Login from "./comp/login/login";
 import Dashboard from "./comp/dashbord/dashboard";
@@ -61,7 +61,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
-          
+          <Route path="/success" element={<Success />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />

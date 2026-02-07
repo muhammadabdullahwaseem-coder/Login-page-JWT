@@ -25,6 +25,29 @@
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.nn {
+  font-size: 24px;
+  font-weight: 600;
+  color: #c2c2ca;
+  font-style: italic;
+  color: #c2c2ca;
+  text-align: center;
+  border-bottom: 5px solid rgba(119, 217, 239, 0.956);
+  border-top: 5px solid rgba(119, 217, 239, 0.956);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  width: 450px;
+  max-width: 90%;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 50px;
+  margin: 200px auto 0 auto;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 5px solid rgba(119, 217, 239, 0.956);
+  border-right: 5px solid rgba(119, 217, 239, 0.956);
+}
+
 .app-wrapper {
   min-height: 100vh;
   transition: background-color 0.5s ease;

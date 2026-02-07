@@ -24,8 +24,7 @@ function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Account created! Please log in.");
-        navigate('/login');
+        navigate('/success');
       } else {
         alert("Signup failed: " + data.message);
       }

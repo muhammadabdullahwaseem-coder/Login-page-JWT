@@ -1,57 +1,88 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
-import { useNavigate, Link } from 'react-router-dom';
 
 function ForgotPassword() {
   const navigate = useNavigate();
+  const [step, setStep] = useState(1); // Step 1: Email, Step 2: OTP
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  // 1. Send OTP
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    alert("Reset link sent!");
-    navigate('/login');
+    // REPLACE WITH YOUR BACKEND URL
+    const res = await fetch('https://your-backend.onrender.com/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    
+    if (res.ok) {
+      alert('OTP sent! Check your email.');
+      setStep(2); // Move to next step
+    } else {
+      alert('User not found or error sending email.');
+    }
+  };
+
+  // 2. Reset Password
+  const handleReset = async (e) => {
+    e.preventDefault();
+    const res = await fetch('https://your-backend.onrender.com/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp, newPassword })
+    });
+
+    if (res.ok) {
+      alert('Password reset successful! Please login.');
+      navigate('/login');
+    } else {
+      alert('Invalid OTP or error.');
+    }
   };
 
   return (
-    <div className="auth-body">
-  
-      <div className="circle circle-1"></div>
-      <div className="circle circle-2"></div>
-
-
-      <div className="glass-card">
-        <h1 style={{color: '#333', marginBottom: '10px'}}>Recover Password</h1>
-        <p style={{color: '#666', marginBottom: '30px'}}>
-          Enter your email and we'll send you a link to reset your password.
-        </p>
-<div class="container">
-  <div class="bg-box">
-    Your centered text here!
-  </div>
-</div>
-        <Form onSubmit={handleSubmit} style={{width: '100%'}}>
-          <Form.Group className="mb-4">
+    <div className='nn'>
+        {step === 1 ? (
+          <Form onSubmit={handleSendOtp}>
+            <h2>Reset Password</h2>
+            <p>Enter your email to receive an OTP</p>
             <Form.Control 
               type="email" 
-              placeholder="Enter your email address" 
+              placeholder="Enter email" 
               value={email} 
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="form-control" 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+              className="mb-3"
             />
-          </Form.Group>
-
-          <Button type="submit" className="btn-primary" style={{width: '100%'}}>
-            Send Reset Link
-          </Button>
-        </Form>
-
-        <div style={{marginTop: '20px'}}>
-          <Link to="/login" style={{color: '#333', fontWeight: 'bold'}}>
-            ← Back to Login
-          </Link>
-        </div>
-      </div>
+            <Button type="submit" className="login-btn" >Send OTP</Button>
+          </Form>
+        ) : (
+          <Form onSubmit={handleReset}>
+            <h2>Enter OTP</h2>
+            <p>Check your inbox for the code</p>
+            <Form.Control 
+              type="text" 
+              placeholder="Enter OTP" 
+              value={otp} 
+              onChange={(e) => setOtp(e.target.value)} 
+              required 
+              className="mb-3"
+            />
+            <Form.Control 
+              type="password" 
+              placeholder="New Password" 
+              value={newPassword} 
+              onChange={(e) => setNewPassword(e.target.value)} 
+              required 
+              className="mb-3"
+            />
+            <Button type="submit">Change Password</Button>
+          </Form>
+        )}
     </div>
   );
 }
