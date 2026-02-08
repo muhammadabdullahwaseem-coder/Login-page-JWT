@@ -13,7 +13,7 @@ function Signup() {
 
     try {
      
-      const response = await fetch('https://login-page-jwt.onrender.com/user/register', {
+      const response = await fetch('http://localhost:5000/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
