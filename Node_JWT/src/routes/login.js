@@ -1,70 +1,45 @@
 const express = require("express");
-const router = express.Router();
-const User = require("../models/User"); 
-const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
+const User = require("../models/User"); 
+const jwt = require("jsonwebtoken");
 
-// Configure Email Transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "mabdullahwaseem999@gmail.com", 
-    pass: "mefp ourt gfuh dywy"    
-  }
-});
+const router = express.Router();
 
-// 1. Route to Request OTP
-router.post("/forgot-password", async (req, res) => {
-  const { email } = req.body;
+// 👇 DEBUG LOG: This will print when you start the server
+console.log("✅ Login Route File is Loaded!");
+
+// 👇 The route is '/login'. Combined with app.js, it becomes '/auth/login'
+router.post("/login", async (req, res) => {
+  console.log("📩 Login Request Received!"); // 👇 Prints when you click 'Login' button
+
   try {
+    const { email, password } = req.body;
+    
+    // Check user
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+        console.log("❌ User not found");
+        return res.status(404).json({ message: "User not found" });
+    }
 
-    // Generate 4-digit OTP
-    const otp = Math.floor(1000 + Math.random() * 9000).toString();
-    
-    // Save to DB (expires in 10 mins)
-    user.otp = otp;
-    user.otpExpires = Date.now() + 600000; 
-    await user.save();
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        console.log("❌ Wrong password");
+        return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-    // Send Email
-    await transporter.sendMail({
-      to: email,
-      subject: "Password Reset OTP",
-      text: `Your OTP is: ${otp}`
+    // Generate Token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "secret_key", {
+      expiresIn: "1h",
     });
 
-    res.json({ message: "OTP sent to email" });
-  } catch (err) {
-    res.status(500).json({ message: "Error sending email" });
-  }
-});
+    console.log("✅ Login Successful for:", email);
+    res.status(200).json({ token, user, message: "Login successful" });
 
-// 2. Route to Verify OTP & Reset Password
-router.post("/reset-password", async (req, res) => {
-  const { email, otp, newPassword } = req.body;
-  try {
-    const user = await User.findOne({ 
-      email, 
-      otp, 
-      otpExpires: { $gt: Date.now() } // Check if not expired
-    });
-
-    if (!user) return res.status(400).json({ message: "Invalid or expired OTP" });
-
-    // Hash new password
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    
-    // Update user
-    user.password = hashedPassword;
-    user.otp = undefined; // Clear OTP
-    user.otpExpires = undefined;
-    await user.save();
-
-    res.json({ message: "Password reset successful" });
-  } catch (err) {
-    res.status(500).json({ message: "Error resetting password" });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

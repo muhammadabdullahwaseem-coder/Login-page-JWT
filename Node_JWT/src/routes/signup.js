@@ -3,7 +3,7 @@ const signupController = require('../controller/signup');
 
 const router = express.Router();
 
-// 👇 This matches the function name 'createUser' we defined above
+// This handles POST requests to /register
 router.post('/register', signupController.createUser); 
 
 module.exports = router;
