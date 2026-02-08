@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "user"
     },
-    // 👇 The new fields for OTP
     resetPasswordOTP: {
         type: String
     },

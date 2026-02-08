@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './success.css'; // We will add simple styles below
+import './success.css';
 
 function Success() {
   const navigate = useNavigate();

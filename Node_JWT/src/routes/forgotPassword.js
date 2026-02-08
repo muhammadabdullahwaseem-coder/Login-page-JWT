@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Route A: Send OTP
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
@@ -38,18 +37,15 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-// 👇 DETECTIVE MODE: Reset Password
 router.post("/reset-password", async (req, res) => {
   console.log("---------------------------------------");
   console.log("🕵️‍♂️ RESET PASSWORD REQUEST RECEIVED");
   
   try {
-    // 1. Log exactly what the Frontend sent
     console.log("📦 Frontend Sent Data:", req.body);
 
     const { email, otp, newPassword } = req.body;
 
-    // 2. Check if variables are empty
     if (!newPassword) {
       console.log("❌ ERROR: newPassword is EMPTY! Check Frontend variable names.");
       return res.status(400).json({ message: "New password is missing" });
@@ -58,20 +54,16 @@ router.post("/reset-password", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // 3. Log Old Hash
     console.log("🔑 Old Password Hash in DB:", user.password);
 
-    // Verify OTP
     if (user.resetPasswordOTP !== otp) {
         console.log("❌ OTP Mismatch");
         return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // 4. Hash New Password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     console.log("🔐 New Password Hash Generated:", hashedPassword);
 
-    // 5. Update and Save
     user.password = hashedPassword;
     user.resetPasswordOTP = undefined;
     user.resetPasswordExpires = undefined;

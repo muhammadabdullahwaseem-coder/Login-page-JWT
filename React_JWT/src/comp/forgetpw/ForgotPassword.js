@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
+import { API_URL } from '../../config';
 
 function ForgotPassword() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // Step 1: Email, Step 2: OTP
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   
 
-  // 1. Send OTP
   const handleSendOtp = async (e) => {
     e.preventDefault();
-    // REPLACE WITH YOUR BACKEND URL
     
-    // 👇 MAKE SURE THIS URL IS EXACTLY CORRECT
-const res = await fetch("http://localhost:5000/auth/forgot-password", {
+const res = await fetch(`${API_URL}/auth/forgot-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -24,30 +22,26 @@ const res = await fetch("http://localhost:5000/auth/forgot-password", {
 
     if (res.ok) {
       alert('OTP sent! Check your email.');
-      setStep(2); // Move to next step
+      setStep(2);
     } else {
       alert('User not found or error sending email.');
     }
   };
 
-  // 2. Reset Password
-  // 2. Reset Password
   const handleReset = async (e) => {
     e.preventDefault();
     
-    // 👇 FIX: Change the URL to 'reset-password'
     const res = await fetch('http://localhost:5000/auth/reset-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // 👇 This matches your backend variable names perfectly now
       body: JSON.stringify({ email, otp, newPassword }),
     });
 
     if (res.ok) {
       alert('Password reset successful! Please login.');
-       navigate('/login'); // Uncomment this if you want to auto-redirect
+       navigate('/login');
     } else {
-      const data = await res.json(); // Read the error message from backend
+      const data = await res.json();
       alert(data.message || 'Invalid OTP or error.');
     }
   };
