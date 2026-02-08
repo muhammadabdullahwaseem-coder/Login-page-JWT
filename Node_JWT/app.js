@@ -15,6 +15,10 @@ app.use(cors());
 app.use(bodyParser.json()); 
 app.use(express.json()); 
 
+app.get("/", (req, res) => {
+  res.send("Server is connected successfully");
+});
+
 app.use("/user", SignupRouter);
 app.use("/auth", loginRouter);
 app.use("/auth", forgotPasswordRouter);
