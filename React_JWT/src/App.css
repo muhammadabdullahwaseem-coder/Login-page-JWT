@@ -321,47 +321,43 @@ p {
   min-height: 100vh;
   padding-top: 50px;
 }
-@media screen and (max-width: 768px) {
+/* =========================================
+   MOBILE NAVBAR: SINGLE HORIZONTAL LINE
+   ========================================= */
+@media (max-width: 768px) {
     
-    /* 1. Stack the Login and "Hello Traveler" panels vertically */
-    .container, .form-container { 
-        flex-direction: column; /* Stack top-to-bottom */
-        width: 95%; /* Use full screen width */
-        height: auto; /* Let it grow as needed */
-        margin: 20px auto;
+    /* 1. Force the Main Container into a Row */
+    nav .container, 
+    .navbar .container {
+        display: flex !important;
+        flex-direction: row !important; /* Horizontal alignment */
+        flex-wrap: nowrap !important;   /* STOP it from stacking */
+        justify-content: space-between !important; /* Logo Left, Buttons Right */
+        align-items: center !important;
+        height: 60px !important; /* Keep it compact */
+        padding: 0 10px !important; /* Small padding on sides */
     }
 
-    /* 2. Make the Sign In / Sign Up sections full width */
-    .sign-in-container, .sign-up-container {
-        width: 100%; /* Full width */
-        padding: 20px;
+    /* 2. Shrink the Logo Text */
+    .navbar-brand, .logo, h1, h2 { 
+        font-size: 18px !important; /* Make logo smaller to fit */
+        margin: 0 !important;
+        white-space: nowrap; /* Prevent "Galaxy App" from breaking into 2 lines */
     }
 
-    /* 3. OPTIONAL: Hide the "Hello Traveler" overlay on mobile
-       (This is common because mobile screens are too small for decoration) */
-    .overlay-container {
-        display: none; 
+    /* 3. Force the Right Side Buttons into a Row */
+    .nav-links, .navbar-nav, .right-side-container {
+        display: flex !important;
+        flex-direction: row !important; /* Buttons side-by-side */
+        align-items: center !important;
+        gap: 5px !important; /* Tiny space between buttons */
     }
 
-    /* 4. Fix Input Fields for thumb-typing */
-    input {
-        width: 100%;
-        padding: 12px 15px;
-        margin: 8px 0;
-        font-size: 16px; /* Prevents iPhone from zooming in */
-    }
-
-    /* 5. Fix Buttons */
-    button {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-    }
-    
-    /* 6. Fix your Forgot Password container (The .nn class) */
-    .nn {
-        width: 90%;
-        margin: 50px auto;
-        padding: 20px;
+    /* 4. Make Links & Buttons Smaller */
+    .navbar a, 
+    .navbar button {
+        font-size: 12px !important; /* Smaller text for mobile */
+        padding: 4px 8px !important; /* Reduce bulk */
+        margin: 0 !important;
     }
 }
