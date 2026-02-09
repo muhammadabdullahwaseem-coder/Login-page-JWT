@@ -321,3 +321,47 @@ p {
   min-height: 100vh;
   padding-top: 50px;
 }
+@media screen and (max-width: 768px) {
+    
+    /* 1. Stack the Login and "Hello Traveler" panels vertically */
+    .container, .form-container { 
+        flex-direction: column; /* Stack top-to-bottom */
+        width: 95%; /* Use full screen width */
+        height: auto; /* Let it grow as needed */
+        margin: 20px auto;
+    }
+
+    /* 2. Make the Sign In / Sign Up sections full width */
+    .sign-in-container, .sign-up-container {
+        width: 100%; /* Full width */
+        padding: 20px;
+    }
+
+    /* 3. OPTIONAL: Hide the "Hello Traveler" overlay on mobile
+       (This is common because mobile screens are too small for decoration) */
+    .overlay-container {
+        display: none; 
+    }
+
+    /* 4. Fix Input Fields for thumb-typing */
+    input {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 8px 0;
+        font-size: 16px; /* Prevents iPhone from zooming in */
+    }
+
+    /* 5. Fix Buttons */
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    /* 6. Fix your Forgot Password container (The .nn class) */
+    .nn {
+        width: 90%;
+        margin: 50px auto;
+        padding: 20px;
+    }
+}
