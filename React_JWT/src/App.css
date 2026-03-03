@@ -354,3 +354,22 @@ p {
         margin: 0 !important;
     }
 }
+/* --- Galaxy Chatbot Theme --- */
+
+df-messenger {
+  /* --- Header --- */
+  --df-messenger-button-titlebar-color: #4a00e0; /* Your Galaxy Purple */
+  --df-messenger-button-titlebar-shadow: 0px 4px 12px rgba(74, 0, 224, 0.5);
+
+  /* --- Message Bubbles --- */
+  --df-messenger-user-message: #e9e9eb; /* Lighter Purple */
+  --df-messenger-bot-message: #f3f3f3;   /* Light Gray */
+
+  /* --- The Input Box Styling (The part you asked for) --- */
+    --df-messenger-chat-background-color: #1a1a2e; /* Dark Blue/Black */
+  --df-messenger-bot-message: #e5e5ec;           /* Darker Gray/Blue */
+  --df-messenger-input-box-color: #dedee2;
+  --df-messenger-input-font-color: white;          /* Cyan/Neon Blue Send Arrow (High Contrast) */
+
+
+}
