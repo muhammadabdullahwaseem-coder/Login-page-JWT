@@ -321,36 +321,43 @@ p {
   min-height: 100vh;
   padding-top: 50px;
 }
+/* =========================================
+   MOBILE NAVBAR: SINGLE HORIZONTAL LINE
+   ========================================= */
 @media (max-width: 768px) {
     
+    /* 1. Force the Main Container into a Row */
     nav .container, 
     .navbar .container {
         display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        justify-content: space-between !important;
+        flex-direction: row !important; /* Horizontal alignment */
+        flex-wrap: nowrap !important;   /* STOP it from stacking */
+        justify-content: space-between !important; /* Logo Left, Buttons Right */
         align-items: center !important;
-        height: 60px !important;
-        padding: 0 10px !important;
+        height: 60px !important; /* Keep it compact */
+        padding: 0 10px !important; /* Small padding on sides */
     }
 
+    /* 2. Shrink the Logo Text */
     .navbar-brand, .logo, h1, h2 { 
-        font-size: 18px !important;
+        font-size: 18px !important; /* Make logo smaller to fit */
         margin: 0 !important;
-        white-space: nowrap;
+        white-space: nowrap; /* Prevent "Galaxy App" from breaking into 2 lines */
     }
 
+    /* 3. Force the Right Side Buttons into a Row */
     .nav-links, .navbar-nav, .right-side-container {
         display: flex !important;
-        flex-direction: row !important;
+        flex-direction: row !important; /* Buttons side-by-side */
         align-items: center !important;
-        gap: 5px !important;
+        gap: 5px !important; /* Tiny space between buttons */
     }
 
+    /* 4. Make Links & Buttons Smaller */
     .navbar a, 
     .navbar button {
-        font-size: 12px !important;
-        padding: 4px 8px !important;
+        font-size: 12px !important; /* Smaller text for mobile */
+        padding: 4px 8px !important; /* Reduce bulk */
         margin: 0 !important;
     }
 }
