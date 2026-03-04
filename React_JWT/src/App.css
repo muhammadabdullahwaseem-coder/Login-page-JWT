@@ -321,35 +321,40 @@ p {
   min-height: 100vh;
   padding-top: 50px;
 }
+
 @media (max-width: 768px) {
     
+
     nav .container, 
     .navbar .container {
         display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        justify-content: space-between !important;
+        flex-direction: row !important; 
+        flex-wrap: nowrap !important;  
+        justify-content: space-between !important; 
         align-items: center !important;
-        height: 60px !important;
-        padding: 0 10px !important;
+        height: 60px !important; 
+        padding: 0 10px !important; 
     }
 
+   
     .navbar-brand, .logo, h1, h2 { 
-        font-size: 18px !important;
+        font-size: 18px !important; 
         margin: 0 !important;
-        white-space: nowrap;
+        white-space: nowrap; 
     }
 
+   
     .nav-links, .navbar-nav, .right-side-container {
         display: flex !important;
-        flex-direction: row !important;
+        flex-direction: row !important; 
         align-items: center !important;
         gap: 5px !important;
     }
 
+ 
     .navbar a, 
     .navbar button {
-        font-size: 12px !important;
+        font-size: 12px !important; 
         padding: 4px 8px !important;
         margin: 0 !important;
     }
