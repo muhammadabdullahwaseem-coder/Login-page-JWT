@@ -5,17 +5,14 @@ const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
 router.post("/forgot-password", async (req, res) => {
+  console.log("FORGOT PASSWORD ROUTE HIT - VERSION 3");
   try {
     const { email } = req.body;
+
+    console.log("EMAIL_USER exists?", !!process.env.EMAIL_USER);
+    console.log("EMAIL_PASS exists?", !!process.env.EMAIL_PASS);
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -23,6 +20,22 @@ router.post("/forgot-password", async (req, res) => {
     user.resetPasswordOTP = otp;
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
     await user.save();
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    });
+
+    await transporter.verify();
+    console.log("SMTP verified");
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -33,9 +46,11 @@ router.post("/forgot-password", async (req, res) => {
 
     res.status(200).json({ message: "OTP sent" });
   } catch (error) {
-  console.error("FORGOT-PASSWORD ERROR:", error);
-  return res.status(500).json({ message: "Error sending email" });
-}
+    console.error("FORGOT-PASSWORD ERROR:", error);
+    console.error("ERROR MESSAGE:", error?.message);
+    console.error("ERROR STACK:", error?.stack);
+    return res.status(500).json({ message: error?.message || "Error sending email" });
+  }
   
 });
 
