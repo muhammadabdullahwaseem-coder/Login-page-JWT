@@ -9,9 +9,18 @@ router.post("/forgot-password", async (req, res) => {
   console.log("FORGOT PASSWORD ROUTE HIT - VERSION 3");
   try {
     const { email } = req.body;
+    const emailUser = (process.env.EMAIL_USER || "").trim();
+    const emailPass = (process.env.EMAIL_PASS || "").replace(/\s+/g, "");
 
-    console.log("EMAIL_USER exists?", !!process.env.EMAIL_USER);
-    console.log("EMAIL_PASS exists?", !!process.env.EMAIL_PASS);
+    console.log("EMAIL_USER exists?", !!emailUser);
+    console.log("EMAIL_PASS exists?", !!emailPass);
+
+    if (!emailUser || !emailPass) {
+      console.error("EMAIL CONFIG ERROR: EMAIL_USER/EMAIL_PASS missing on server env");
+      return res.status(500).json({
+        message: "Server email config missing (EMAIL_USER / EMAIL_PASS).",
+      });
+    }
 
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -26,8 +35,8 @@ router.post("/forgot-password", async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: emailUser,
+        pass: emailPass,
       },
       connectionTimeout: 10000,
       greetingTimeout: 10000,
@@ -38,7 +47,7 @@ router.post("/forgot-password", async (req, res) => {
     console.log("SMTP verified");
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: emailUser,
       to: user.email,
       subject: "Password Reset OTP",
       text: `Your OTP is: ${otp}`,
