@@ -1,13 +1,11 @@
 const express = require("express");
 const User = require("../models/User");
-const { Resend } = require("resend");
 const bcrypt = require("bcrypt");
 
 const router = express.Router();
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 router.post("/forgot-password", async (req, res) => {
-  console.log("FORGOT PASSWORD ROUTE HIT - VERSION 3");
+  console.log("FORGOT PASSWORD ROUTE HIT - BREVO API");
   try {
     const { email } = req.body;
 
@@ -19,15 +17,24 @@ router.post("/forgot-password", async (req, res) => {
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
     await user.save();
 
-    const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: user.email,
-      subject: "Password Reset OTP",
-      text: `Your OTP is: ${otp}`,
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "api-key": process.env.BREVO_API_KEY,
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        sender: { email: "mabdullahwaseem999@gmail.com", name: "JWT_App" },
+        to: [{ email: user.email }],
+        subject: "Password Reset OTP",
+        textContent: `Your OTP is: ${otp}`
+      })
     });
 
-    if (error) {
-      console.error("RESEND API ERROR:", error);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("BREVO API ERROR:", errorData);
       return res.status(500).json({ message: "Error sending email via API" });
     }
 
