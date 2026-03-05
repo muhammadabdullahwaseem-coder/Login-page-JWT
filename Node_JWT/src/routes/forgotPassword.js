@@ -5,7 +5,10 @@ const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
-const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
+const normalizeEmail = (email) =>
+  String(email || "")
+    .trim()
+    .toLowerCase();
 const cleanOtp = (otp) => String(otp || "").trim();
 const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
 
@@ -14,15 +17,17 @@ const createTransporter = () => {
   const emailPass = String(process.env.EMAIL_PASS || "").trim();
 
   if (!emailUser || !emailPass) {
-    const err = new Error("Server email config missing (EMAIL_USER / EMAIL_PASS).");
+    const err = new Error(
+      "Server email config missing (EMAIL_USER / EMAIL_PASS).",
+    );
     err.code = "EMAIL_CONFIG_MISSING";
     throw err;
   }
 
   return nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     auth: { user: emailUser, pass: emailPass },
     connectionTimeout: 10000,
     greetingTimeout: 10000,
@@ -59,13 +64,16 @@ router.post("/forgot-password", async (req, res) => {
 
     return res.status(200).json({ message: "OTP sent" });
   } catch (error) {
-    console.error("FORGOT-PASSWORD ERROR:", error?.code || "", error?.message || error);
+    console.error(
+      "FORGOT-PASSWORD ERROR:",
+      error?.code || "",
+      error?.message || error,
+    );
 
     return res.status(500).json({
       message: "Server error while sending email",
-      ...(process.env.NODE_ENV !== "production" && {
-        debug: { code: error?.code, message: error?.message },
-      }),
+      code: error?.code,
+      details: error?.message,
     });
   }
 });
@@ -79,11 +87,15 @@ router.post("/reset-password", async (req, res) => {
     const newPassword = String(req.body.newPassword || "");
 
     if (!email || !otp || !newPassword) {
-      return res.status(400).json({ message: "Email, OTP, and newPassword are required" });
+      return res
+        .status(400)
+        .json({ message: "Email, OTP, and newPassword are required" });
     }
 
     if (newPassword.length < 8) {
-      return res.status(400).json({ message: "Password must be at least 8 characters" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters" });
     }
 
     const user = await User.findOne({ email });
@@ -112,7 +124,11 @@ router.post("/reset-password", async (req, res) => {
 
     return res.status(200).json({ message: "Password reset successful" });
   } catch (error) {
-    console.error("RESET-PASSWORD ERROR:", error?.code || "", error?.message || error);
+    console.error(
+      "RESET-PASSWORD ERROR:",
+      error?.code || "",
+      error?.message || error,
+    );
 
     return res.status(500).json({
       message: "Server error",
